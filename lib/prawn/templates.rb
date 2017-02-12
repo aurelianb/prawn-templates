@@ -111,8 +111,10 @@ module Prawn
         # When generating Prawn::Document with template option, the included template will be referenced in all
         # start_new_page(template: _template_path) usages. This will reset the reference of the input,
         # thus no duplicated first-page contents on start_new_page!
-        # This resets the reference to the IO object.
-        input = Marshal.load(Marshal.dump(input))
+        # This resets the reference of the IO object.
+        # rescue to default value.
+        # TODO: Check RSpecs.
+        input = Marshal.load(Marshal.dump(input)) rescue input
         hash = indexed_hash(input, io)
         ref  = hash.page_references[page_num - 1]
 
