@@ -108,6 +108,11 @@ module Prawn
                fail ArgumentError, "input must be an IO-like object or a filename"
              end
 
+        # When generating Prawn::Document with template option, the included template will be referenced in all
+        # start_new_page(template: _template_path) usages. This will reset the reference of the input,
+        # thus no duplicated first-page contents on start_new_page!
+        # This resets the reference to the IO object.
+        input = Marshal.load(Marshal.dump(input))
         hash = indexed_hash(input, io)
         ref  = hash.page_references[page_num - 1]
 
